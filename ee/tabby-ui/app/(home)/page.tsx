@@ -86,7 +86,7 @@ function MainPanel() {
     setIsLoading(true)
     sessionStorage.removeItem(SESSION_STORAGE_KEY.SEARCH_LATEST_MSG)
     sessionStorage.setItem(SESSION_STORAGE_KEY.SEARCH_INITIAL_MSG, question)
-    router.push('/search')
+    router.push('/search?q=pending')
   }
 
   const style = isShowDemoBanner
