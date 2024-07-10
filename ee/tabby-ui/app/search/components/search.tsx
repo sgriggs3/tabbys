@@ -159,10 +159,9 @@ export function Search() {
         onSubmitSearch(initialMessage)
         setIsAuthor(true)
         setIsReady(true)
-        return
+      } else {
+        router.replace('/')
       }
-
-      // FIXME(wwayne): what if no initalMessage
     }
   }, [])
 
@@ -192,28 +191,25 @@ export function Search() {
   // Update page url if needed
   useEffect(() => {
     if (isFirstAnswerLoaded) {
-      // FIXME(wwayne): what if user click stop for the first answer
-      if (isSearchPending) {
-        const firstQuestion = conversation[0]
-        if (firstQuestion) {
-          const title = firstQuestion.content
-          document.title = slugify(title, {
-            replacement: ' ',
-            lower: false,
-            strict: true // Remove special characters
-          })
+      const title = conversation[0]?.content
+      if (title) {
+        document.title = slugify(title, {
+          replacement: ' ',
+          lower: false,
+          strict: true // Remove special characters
+        })
 
-          if (isSearchPending) {
-            const normalizedTitle = slugify(title, {
-              lower: true,
-              strict: true
-            })
-              .split('-')
-              .slice(0, 10)
-              .join('-')
-            // FIXME(wwayne): add threadId in the end
-            window.history.replaceState(null, '', `/search/${normalizedTitle}`)
-          }
+        // FIXME: should add threadId into the condition
+        if (isSearchPending) {
+          const normalizedTitle = slugify(title, {
+            lower: true,
+            strict: true
+          })
+            .split('-')
+            .slice(0, 10)
+            .join('-')
+          // FIXME(wwayne): add threadId in the end
+          window.history.replaceState(null, '', `/search/${normalizedTitle}`)
         }
       }
     }
@@ -414,7 +410,7 @@ export function Search() {
             <Button
               variant="ghost"
               className="-ml-1 pl-0 text-sm text-muted-foreground"
-              onClick={() => router.back()}
+              onClick={() => router.push('/')}
             >
               <IconChevronLeft className="mr-1 h-5 w-5" />
               Home
